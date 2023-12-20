@@ -1,4 +1,4 @@
-<h3 align="center">Tic-Tac-Toe Game</h3>
+<h1 align="center">Tic-Tac-Toe Game</h1>
 
 <div align="left">
 
