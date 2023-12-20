@@ -1,0 +1,101 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        // Scanner for user input
+        Scanner newScanner = new Scanner(System.in);
+
+        // Flag to continue the game
+        boolean continueGame = true;
+
+        // Main game loop
+        while (continueGame) {
+            // Initialize the game board with empty cells represented by underscores
+            char[][] gameBoard = {{'_', '_', '_'}, {'_', '_', '_'}, {'_', '_', '_'}};
+
+            // Randomly choose the starting player ('X' or 'O')
+            int turn = new Random().nextInt(2);
+            char currentPlayer = (turn == 0) ? 'X' : 'O';
+
+            // Iterate through each turn (maximum 9 turns in Tic-Tac-Toe)
+            for (int i = 0; i < 9; i++) {
+                // Display the current state of the game board
+                printBoard(gameBoard);
+
+                // Prompt the current player for their move (row and column)
+                System.out.println("Player " + currentPlayer + ", enter your move (row and column): ");
+                int row = newScanner.nextInt();
+                int col = newScanner.nextInt();
+
+                // Check if the move is valid
+                if (isValidMove(gameBoard, row, col)) {
+                    // Update the game board with the player's move
+                    gameBoard[row][col] = currentPlayer;
+
+                    // Check for a winner after the move
+                    if (isWinner(gameBoard, currentPlayer)) {
+                        printBoard(gameBoard);
+                        System.out.println("Player " + currentPlayer + " wins!");
+                        break; // Exit the game loop if there's a winner
+                    }
+
+                    // Switch to the other player's turn
+                    turn = (turn + 1) % 2;
+                    currentPlayer = (turn == 0) ? 'X' : 'O';
+                } else {
+                    System.out.println("Invalid move. Try again.");
+                    i--; // Decrement i to repeat the current player's turn
+                }
+            }
+
+            // Ask the user if they want to start a new game
+            continueGame = startGame();
+        }
+    }
+
+    // Method to prompt the user if they want to start a new game
+    public static boolean startGame() {
+        System.out.println("Do you wish to start a new game?\nPress 1 for Yes or 0 for No.");
+        Scanner newScanner = new Scanner(System.in);
+        String answer = newScanner.nextLine();
+        // Validate user input
+        while (!answer.equals("1") && !answer.equals("0")) {
+            System.out.println("Please enter 1 for Yes or 0 for No.");
+            answer = newScanner.nextLine();
+        }
+        // Return true if the user wants to start a new game, false otherwise
+        return answer.equals("1");
+    }
+
+    // Method to check if a move is valid (within the bounds and the cell is empty)
+    public static boolean isValidMove(char[][] board, int row, int col) {
+        return row >= 0 && row < 3 && col >= 0 && col < 3 && board[row][col] == '_';
+    }
+
+    // Method to display the current state of the game board
+    public static void printBoard(char[][] board) {
+        System.out.println("-------------");
+        for (int i = 0; i < 3; i++) {
+            System.out.print("| ");
+            for (int j = 0; j < 3; j++) {
+                System.out.print(board[i][j] + " | ");
+            }
+            System.out.println();
+            System.out.println("-------------");
+        }
+    }
+
+    // Method to check if a player has won
+    static boolean isWinner(char[][] board, char player) {
+        // Check rows, columns, and diagonals for a winner
+        for (int i = 0; i < 3; i++) {
+            if ((board[i][0] == player && board[i][1] == player && board[i][2] == player) ||
+                    (board[0][i] == player && board[1][i] == player && board[2][i] == player)) {
+                return true;
+            }
+        }
+        return (board[0][0] == player && board[1][1] == player && board[2][2] == player) ||
+                (board[0][2] == player && board[1][1] == player && board[2][0] == player);
+    }
+}
