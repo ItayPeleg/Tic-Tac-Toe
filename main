@@ -47,6 +47,11 @@ public class Main {
                     System.out.println("Invalid move. Try again.");
                     i--; // Decrement i to repeat the current player's turn
                 }
+
+                if (i == 8) {
+                    printBoard(gameBoard);
+                    System.out.println("It's a tie!");
+                }
             }
 
             // Ask the user if they want to start a new game
@@ -99,3 +104,4 @@ public class Main {
                 (board[0][2] == player && board[1][1] == player && board[2][0] == player);
     }
 }
+
